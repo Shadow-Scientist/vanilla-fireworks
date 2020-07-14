@@ -1,0 +1,137 @@
+<body style="padding:0;margin:0;overflow:hidden;background:black;width:100vw;height:100vh" onload="fireworks()">
+<style>
+/*Vanilla Fireworks | MIT License | https://github.com/Shadow-Scientist/vanilla-fireworks*/
+
+#container{
+position:absolute;left:0;top:0;width:100%;height:100%;user-select:none;
+}
+
+.txt{
+position:absolute;left:50%;bottom:80px;font-family:'raleway';font-size:40px;font-weight:bold;color:white;transform:translateX(-50%);letter-spacing:8px;white-space:nowrap;
+background:rgba(255,255,255,0.1);padding:10px 20px;opacity:0.2;transition:all ease 0.2s;user-select:none;
+}
+
+.txt:hover{opacity:1}
+
+.box{
+position:absolute;left:200px;top:200px;animation:r 8s linear forwards;transform:translateX(-50%) rotate(0deg);
+}
+
+.rocket{
+position:absolute;left:200px;top:100%;width:8px;height:100px;animation:aa 4s cubic-bezier(.19,1,.22,1) forwards;transform:translateX(-50%);border-radius:20px;
+}
+
+.spike{
+position:absolute;left:0;top:0;width:100%;height:0%;animation:ff ease 2.2s var(--layer-delay, 0s) forwards;overflow:hidden;border-radius:10px;
+}
+
+.width_adjust{
+appearance:none;
+-webkit-appearance:none;
+width:300px;
+height:10px;
+background:rgba(255,255,255,0.2);
+position:relative;
+top:-8px;
+margin-left:20px;
+border-radius:4px;
+}
+
+.width_adjust::-moz-range-thumb{
+appearance:none;
+width:50px;height:25px;background:rgb(0,125,255);border:0;outline:none;transition:all ease 0.2s;
+}
+
+.width_adjust:active::-moz-range-thumb{box-shadow:0 0 0 5px rgba(0,125,255,0.2)}
+
+@keyframes r{to{transform:translateX(-50%) rotate(1turn)}}
+@keyframes ff{
+90%{height:100px;top:65%}
+100%{transform:scale(0)}
+}
+@keyframes aa{to{top:var(--top);width:4px;height:0px;opacity:0}}
+</style>
+
+<div id="container"></div>
+<span class="txt"><b>FIRE</b>WORKS<INPUT id="firewidth" class="width_adjust" TYPE="RANGE" min="20" max="2200" value="20" step="1"></span>
+
+<script>
+/*Vanilla Fireworks | MIT License | https://github.com/Shadow-Scientist/vanilla-fireworks*/
+
+function random(min, max, round){var p = min + Math.random()*(max-min); return (round ? Math.round(p) : p)}
+function which_color(){return 'rgb('+random(20,255,true)+', '+random(20,255,true)+', '+random(20,255,true)+')'}
+
+function fireworks(){
+var interval = random(1000, 2000, true); // 20-200, 500-1000
+var cont = document.getElementById("container");
+var box = document.createElement('div');
+box.className = 'box';
+var size = random(100, 200, true);
+var shift = random(15, 85)+"%";
+
+box.style.width = size+'px';
+box.style.height = size+'px';
+box.style.left = shift;
+box.onanimationend = function(){this.outerHTML = ''};
+
+var rocket = document.createElement('div');
+rocket.className = 'rocket';
+rocket.style.left = 'calc('+shift+')';
+rocket.style.backgroundColor = which_color();
+rocket.style.setProperty('--top', size*1.5+'px');
+rocket.onanimationend = function(){this.outerHTML = ''};
+
+cont.appendChild(box);
+cont.appendChild(rocket);
+
+count1 = random(5,22,true);
+count2 = random(5,22,true);
+count3 = random(5,32,true);
+radius = size*0.3;
+
+lucky_charm = random(1, 3.1);
+
+setTimeout(function(){
+layer(count1, which_color(), radius, size/2, box);
+if(lucky_charm >= 2) layer(count2, which_color(), radius*2, size/2, box);
+if(lucky_charm >= 3) layer(count3, which_color(), radius/12, size/2, box);
+}, 300);
+
+setTimeout(function(){fireworks()}, interval);
+}
+
+function layer(plots, color, r, center, prnt)
+{
+theta = Math.PI * 2 / plots;
+width = random(7, firewidth.value || 22, true);
+delay = random(0,500)/1000;
+for(var i=0; i<plots; i++)
+{
+cx = r * Math.cos(i*theta) + center;
+cy = r * Math.sin(i*theta) + center;
+angle = Math.atan2(cy - center, cx - center) * (180 / Math.PI) - 90;
+prnt.appendChild(spike(width, 300, cx, cy, angle+'deg', color, delay));
+}
+}
+
+function spike(w, h, x, y, a, c, d)
+{
+var q = document.createElement('div');
+var s = q.style;
+s.width = w+'px';
+s.height = h+'px';
+s.position = 'absolute';
+s.left = x+'px';
+s.top = y+'px';
+s.setProperty('--layer-delay', d+'s');
+s.transform = 'translate(-50%, -50%) rotate('+a+')';
+s.backgroundColor = 'rgba(0,0,0,0)';
+q.innerHTML = "<div class='spike' style='background-color:"+c+"' onanimationend='this.parentElement.outerHTML = \"\"'><\/div>"
+return q;
+}
+
+/*
+#ref
+https://www.smashingmagazine.com/2011/10/quick-look-math-animations-javascript/
+*/
+</script>
