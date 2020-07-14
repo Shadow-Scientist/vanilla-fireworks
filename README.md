@@ -5,4 +5,6 @@ The objective of this project is to represent (may be the closer) fireworks in H
 
 The another part denotes the use of pure Javascript, as a message to not be dependent on libraries when you really don't need them. Also CSS variables have made more easier to interact with real-time coding and unlocked millions of opportunities to show your creativity.
 
+Don't forget to experience it in fullscreen!
+
 See the code in progress @ https://www.youtube.com/watch?v=u-QaYZLKqHU
