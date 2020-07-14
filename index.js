@@ -9,10 +9,6 @@
  of trigonometry.
 */
 
-/*
- 
-*/
-
 // base function
 function fireworks(){
 	var interval = random(500, 700, true);
